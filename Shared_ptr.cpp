@@ -7,6 +7,12 @@ operator=
 operator->
 operator*
 */
+/*
+引用计数线程安全实现思路
+再定义一个std::mutex * mutex,构造函数初始化的时候 再mutex =new mtuex()
+每次对计数加减时 加锁
+同时所有ptr要共享这个mutex
+*/
 template <typename T>
 class Shared_ptr{
 public: 
