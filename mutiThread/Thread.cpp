@@ -3,8 +3,7 @@
 #include<chrono>
 #include<vector>
 #include<future>
-using namespace std;
-int download(string filename,int size)
+int download(std::string filename,int size)
 {
     std::cout<<"start download "<<filename<<std::endl;
     for(int i=0;i<size;++i)
@@ -76,7 +75,7 @@ class Test{
                     std::unique_lock grad(mtx);//unique_lock可以主动调用unlock
                     L.push_back(i);
                     grad.unlock();
-                    std::cout<<"thread 2 push: "<<i<<endl;
+                    std::cout<<"thread 2 push: "<<i<<std::endl;
                 }
             });
             t1.join();
@@ -108,7 +107,7 @@ class Test{
                     L.push_back(i);
                     mtx2.unlock();
                     mtx1.unlock();
-                    std::cout<<"thread 2 push: "<<i<<endl;
+                    std::cout<<"thread 2 push: "<<i<<std::endl;
                 }
             });
             t1.join();
@@ -141,6 +140,6 @@ int main()
     Test T;
     //T.testThreadLife();
     //T.testFuture();
-    T.testRecurLock();
+    T.testMtx();
     return 0;
 }
