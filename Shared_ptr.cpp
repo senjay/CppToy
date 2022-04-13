@@ -127,7 +127,38 @@ void PringCnt(Shared_ptr<Obj>&s)
     printf("cnt_:%d\n",s.getCnt());
 }
 
+class Parent;
+class Child{
+    public:
+    Child(){}
+    Shared_ptr<Parent> p;
+    std::string name_="thischild";
+};
+class Parent{
+    public:
+    Parent(){}
+    Shared_ptr<Child> c;
+    std::string name_="thisparent";
+};
 
+//循环引用测试例子
+void TestCircleRef()
+{
+    Parent *p1=new Parent();
+    Child* c1=new Child();
+    {
+        Shared_ptr<Parent>parent(p1);
+        Shared_ptr<Child>child(c1);
+        parent->c=child;
+        child->p=parent;
+        std::cout<<"now parent should have 2,it has "<<parent.getCnt()<<std::endl;   
+        std::cout<<"now child should have 2,it has "<<child.getCnt()<<std::endl;   
+    }
+    if(p1!=nullptr) 
+        std::cout<<"parent didn't delete! it's name is "<<p1->name_<<std::endl;
+    if(c1!=nullptr)
+        std::cout<<"child didn't delete! it's name is "<<c1->name_<<std::endl;
+}
 int main() {
 
     Shared_ptr<Obj>p1(new Obj(888));
@@ -160,4 +191,8 @@ int main() {
     std::cout<<"now p4 should have 1,it has "<<p4.getCnt()<<std::endl;   
     cout<<p1->val<<endl;
     cout<<(*p1).val<<endl;
+    
+  
+    TestCircleRef();
+    return 0;
 }
